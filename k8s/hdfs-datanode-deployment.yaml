@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hdfs-datanode
+  labels:
+    app: hdfs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hdfs
+      component: datanode
+  template:
+    metadata:
+      labels:
+        app: hdfs
+        component: datanode
+    spec:
+      containers:
+      - name: datanode
+        image: apache/hadoop:3.4.1
+        ports:
+        - containerPort: 9864
+        env:
+        - name: CLUSTER_NAME
+          value: "hdfs-cluster"
+        volumeMounts:
+        - name: hdfs-config-volume
+          mountPath: /opt/hadoop/etc/hadoop
+      volumes:
+      - name: hdfs-config-volume
+        configMap:
+          name: hdfs-config
+      resources:
+        requests:
+          #cpu: "1"
+          memory: "2Gi"
+        limits:
+          #cpu: "2"
+          memory: "4Gi"

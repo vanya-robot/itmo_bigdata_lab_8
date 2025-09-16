@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: datanode
+  labels:
+    app: hdfs
+    component: datanode
+spec:
+  selector:
+    app: hdfs
+    component: datanode
+  ports:
+    - port: 9864
+      targetPort: 9864
+  type: ClusterIP

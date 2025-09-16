@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-job
+  labels:
+    app: spark
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spark
+  template:
+    metadata:
+      labels:
+        app: spark
+    spec:
+      containers:
+      - name: spark-job
+        image: bitnami/spark:4.0.0
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            echo "Step 1: Running Scala ETL job" && \
+            spark-submit \
+              --master "$SPARK_MASTER" \
+              --class DataMart \
+              /app/datamart-csv-fat.jar \
+              "$HDFS_RAW_PATH_SCALA" \
+              "$HDFS_PROCESSED_PATH" && \
+            echo "Step 2: Running Python processing" && \
+            python3 /app/src/main.py && \
+            echo "Job completed. Keeping container alive for monitoring..." && \
+            tail -f /dev/null;
+        envFrom:
+        - configMapRef:
+            name: spark-config
+        volumeMounts:
+        - name: spark-config-volume
+          mountPath: /app/config
+        resources:
+          requests:
+            #cpu: "2"
+            memory: "4Gi"
+          limits:
+            #cpu: "4"
+            memory: "6Gi"
+      volumes:
+      - name: spark-config-volume
+        configMap:
+          name: spark-config

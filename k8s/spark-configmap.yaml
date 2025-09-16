@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spark-config
+  labels:
+    app: spark
+    component: config
+data:
+  .env: |
+    # --- PostgreSQL ---
+    POSTGRES_USER=lab_user
+    POSTGRES_PASSWORD=lab_pass
+    POSTGRES_DB=lab_db
+    POSTGRES_HOST=postgres
+    POSTGRES_PORT=5432
+    POSTGRES_TABLE_SOURCE=source_data
+    POSTGRES_TABLE_PREDICTIONS=predictions
+
+    # --- Spark ---
+    SPARK_MASTER=local[*]
+    SPARK_DRIVER_MEMORY=1g
+    SPARK_EXECUTOR_MEMORY=1g
+    SPARK_DRIVER_CORES=1
+    SPARK_EXECUTOR_CORES=1
+    SPARK_NUM_EXECUTORS=1
+    SPARK_JAVA_OPTS=-Dfile.encoding=UTF-8
+    POSTGRES_JDBC_PATH=/opt/bitnami/spark/jars/postgresql-42.5.0.jar
+    SPARK_DEFAULT_FS=hdfs://namenode:9000
+
+    # --- App ---
+    MODEL_PATH=src/models/kmeans_model
+    SPARK_APP_NAME=Lab7App
+
+    # --- HDFS ---
+    HDFS_RAW_PATH=hdfs://namenode:9000/app/sql/source_data.csv
+    HDFS_RAW_PATH_SCALA=hdfs://namenode:9000/app/sql/source_data.csv
+    SOURCE_FILE=src/sql/source_data.csv
+    HDFS_PROCESSED_PATH=processed
+
+    # --- SCALA ---
+    JAR_PATH=datamart-csv-fat.jar
