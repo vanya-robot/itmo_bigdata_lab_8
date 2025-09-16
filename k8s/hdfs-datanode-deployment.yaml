@@ -19,22 +19,29 @@ spec:
       containers:
       - name: datanode
         image: apache/hadoop:3.4.1
-        ports:
-        - containerPort: 9864
+        imagePullPolicy: IfNotPresent
         env:
-        - name: CLUSTER_NAME
-          value: "hdfs-cluster"
+        - name: HADOOP_HOME
+          value: "/opt/hadoop"
+        - name: HADOOP_CONF_DIR
+          value: "/opt/hadoop/etc/hadoop"
         volumeMounts:
         - name: hdfs-config-volume
           mountPath: /opt/hadoop/etc/hadoop
+        - name: datanode-data
+          mountPath: /opt/hadoop/data/dataNode
+        - name: init-script
+          mountPath: /init-datanode.sh
+          subPath: init-datanode.sh
+        command: ["/bin/bash", "/init-datanode.sh"]
+        ports:
+        - containerPort: 9864
       volumes:
       - name: hdfs-config-volume
         configMap:
           name: hdfs-config
-      resources:
-        requests:
-          #cpu: "1"
-          memory: "2Gi"
-        limits:
-          #cpu: "2"
-          memory: "4Gi"
+      - name: datanode-data
+        emptyDir: {}
+      - name: init-script
+        configMap:
+          name: hdfs-scripts

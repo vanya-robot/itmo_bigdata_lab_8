@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hdfs-scripts
+data:
+  start-hdfs.sh: |
+    #!/bin/bash
+    set -e
+
+    echo "======================================="
+    echo "Initializing NameNode..."
+    echo "======================================="
+
+    NAMENODE_DIR="/opt/hadoop/data/nameNode"
+
+    if [ ! -d "$NAMENODE_DIR/current" ]; then
+        echo "Formatting NameNode..."
+        hdfs namenode -format -force -nonInteractive
+    else
+        echo "NameNode already formatted."
+    fi
+
+    echo "Starting NameNode service..."
+    hdfs namenode
+
+  init-datanode.sh: |
+    #!/bin/bash
+    set -e
+
+    DATANODE_DIR="/opt/hadoop/data/dataNode"
+
+    echo "Cleaning DataNode directory..."
+    mkdir -p "$DATANODE_DIR"
+    rm -rf "$DATANODE_DIR"/*
+    chown -R hadoop:hadoop "$DATANODE_DIR"
+    chmod 755 "$DATANODE_DIR"
+
+    echo "Starting DataNode service..."
+    hdfs datanode

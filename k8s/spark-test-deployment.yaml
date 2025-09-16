@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spark-test
+  template:
+    metadata:
+      labels:
+        app: spark-test
+    spec:
+      containers:
+      - name: spark-test
+        image: vanyarobot/spark-job
+        imagePullPolicy: Always
+        command: ["sleep", "3600"]   # вместо запуска ETL просто держим контейнер живым
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+          limits:
+            cpu: "1"
+            memory: "1Gi"

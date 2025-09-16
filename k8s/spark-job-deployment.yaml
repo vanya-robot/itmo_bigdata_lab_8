@@ -16,12 +16,13 @@ spec:
     spec:
       containers:
       - name: spark-job
-        image: bitnami/spark:4.0.0
+        image: vanyarobot/spark-job
         command: ["/bin/bash", "-c"]
         args:
           - |
             echo "Step 1: Running Scala ETL job" && \
             spark-submit \
+              --conf spark.jars.ivy=/tmp/.ivy2 \
               --master "$SPARK_MASTER" \
               --class DataMart \
               /app/datamart-csv-fat.jar \
@@ -39,10 +40,10 @@ spec:
           mountPath: /app/config
         resources:
           requests:
-            #cpu: "2"
+            cpu: "2"
             memory: "4Gi"
           limits:
-            #cpu: "4"
+            cpu: "4"
             memory: "6Gi"
       volumes:
       - name: spark-config-volume
