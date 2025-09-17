@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hadoop-namenode
+  namespace: hadoop
+spec:
+  selector:
+    matchLabels:
+      app: hadoop
+      component: namenode
+  template:
+    metadata:
+      labels:
+        app: hadoop
+        component: namenode
+    spec:
+      initContainers:
+      - name: init-namenode-dir
+        image: busybox
+        command: ['sh', '-c', 'mkdir -p /hadoop/dfs/name/current && chmod -R 777 /hadoop/dfs']
+        volumeMounts:
+        - name: namenode-storage
+          mountPath: /hadoop/dfs/name
+      containers:
+      - name: namenode
+        image: apache/hadoop:3.4.1
+        command: ["hdfs", "namenode"]
+        args: 
+          - "-format"
+          - "-force"
+        env:
+        - name: HADOOP_CONF_DIR
+          value: /opt/hadoop/etc/hadoop
+        ports:
+#        - containerPort: 9000
+        - containerPort: 9820
+        - containerPort: 9870
+        volumeMounts:
+        - name: hadoop-config
+          mountPath: /opt/hadoop/etc/hadoop
+        - name: namenode-storage
+          mountPath: /hadoop/dfs/name
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "500m"
+          limits:
+            memory: "6Gi"
+            cpu: "1500m"
+      volumes:
+      - name: hadoop-config
+        configMap:
+          name: hadoop-config
+      - name: namenode-storage
+        persistentVolumeClaim:
+          claimName: namenode-pvc
