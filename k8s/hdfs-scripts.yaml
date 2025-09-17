@@ -13,7 +13,7 @@ data:
 
     NAMENODE_DIR="/opt/hadoop/data/nameNode"
 
-    if [ ! -d "$NAMENODE_DIR/current" ]; then
+    if [ ! -d "$NAMENODE_DIR/" ]; then
         echo "Formatting NameNode..."
         hdfs namenode -format -force -nonInteractive
     else
@@ -21,6 +21,8 @@ data:
     fi
 
     echo "Starting NameNode service..."
+    hdfs namenode -format -force
+
     hdfs namenode
 
   init-datanode.sh: |
@@ -31,9 +33,9 @@ data:
 
     echo "Cleaning DataNode directory..."
     mkdir -p "$DATANODE_DIR"
-    rm -rf "$DATANODE_DIR"/*
-    chown -R hadoop:hadoop "$DATANODE_DIR"
-    chmod 755 "$DATANODE_DIR"
+    #rm -rf "$DATANODE_DIR"/*
+    #chown -R hadoop:hadoop "$DATANODE_DIR"
+    #chmod 755 "$DATANODE_DIR"
 
     echo "Starting DataNode service..."
-    hdfs --daemon start datanode
+    hdfs datanode

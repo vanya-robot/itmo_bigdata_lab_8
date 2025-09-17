@@ -10,7 +10,7 @@ data:
     <configuration>
       <property>
         <name>fs.defaultFS</name>
-        <value>hdfs://namenode:9000</value>
+        <value>hdfs://hdfs-namenode:9000</value>
       </property>
     </configuration>
   hdfs-site.xml: |
@@ -26,6 +26,10 @@ data:
       <property>
         <name>dfs.datanode.data.dir</name>
         <value>/opt/hadoop/data/dataNode</value>
+      </property>
+      <property>
+        <name>dfs.namenode.rpc-address</name>
+        <value>hdfs-namenode:9000</value>
       </property>
     </configuration>
   log4j.properties: |
@@ -44,11 +48,11 @@ data:
       </property>
       <property>
         <name>mapreduce.jobhistory.address</name>
-        <value>namenode:10020</value>
+        <value>hdfs-namenode:10020</value>
       </property>
       <property>
         <name>mapreduce.jobhistory.webapp.address</name>
-        <value>namenode:19888</value>
+        <value>hdfs-namenode:19888</value>
       </property>
     </configuration>
   yarn-site.xml: |
@@ -59,10 +63,23 @@ data:
       </property>
       <property>
         <name>yarn.resourcemanager.hostname</name>
-        <value>namenode</value>
+        <value>hdfs-namenode</value>
       </property>
       <property>
         <name>yarn.resourcemanager.webapp.address</name>
-        <value>namenode:8088</value>
+        <value>hdfs-namenode:8088</value>
+      </property>
+    </configuration>
+  hdfs-default.xml: |
+    <configuration>
+      <property>
+        <name>dfs.client.use.datanode.hostname</name>
+        <value>true</value>
+        <description>Whether clients should use DataNode hostnames whenconnecting to data nodes.</description> 
+      </property>
+      <property>
+        <name>dfs.datanode.use.datanode.hostname</name>
+        <value>true</value>
+        <description>Whether datanodes should use datanode hostnames whenconnecting to other datanodes for data transfer.</description>
       </property>
     </configuration>

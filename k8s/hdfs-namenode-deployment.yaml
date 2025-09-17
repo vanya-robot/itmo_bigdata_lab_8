@@ -5,6 +5,11 @@ metadata:
   labels:
     app: hdfs
 spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
   replicas: 1
   selector:
     matchLabels:
@@ -16,7 +21,6 @@ spec:
         app: hdfs
         component: namenode
     spec:
-      hostname: namenode
       containers:
       - name: namenode
         image: apache/hadoop:3.4.1
@@ -38,6 +42,15 @@ spec:
         ports:
         - containerPort: 9870
         - containerPort: 9000
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "500m"
+          limits:
+            memory: "6Gi"
+            cpu: "1000m"
+        securityContext:
+          runAsUser: 0
       volumes:
       - name: hdfs-config-volume
         configMap:
