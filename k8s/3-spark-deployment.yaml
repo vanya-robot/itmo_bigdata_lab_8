@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-datamart-deployment
+  labels:
+    app: spark-datamart
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spark-datamart
+  template:
+    metadata:
+      labels:
+        app: spark-datamart
+    spec:
+      containers:
+        - name: spark-datamart
+          image: vanyarobot/spark-datamart-app:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+#          env:
+#            # PostgreSQL connection details for Scala's input
+#            - name: POSTGRES_HOSTNAME
+#            - name: POSTGRES_PORT
+#            - name: POSTGRES_DB
+#            - name: POSTGRES_USER
+#            - name: POSTGRES_PASSWORD
+#            - name: POSTGRES_INPUT_TABLE # Table name for Scala to read from
+
+            # Local CSV path for Scala's output and Python's input
+#            - name: PROCESSED_CSV_PATH # Path inside the container
+
+            # Spark configuration
+#            - name: SPARK_MASTER
+#            - name: MODEL_PATH
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "500m"
+            limits:
+              memory: "6Gi"
+              cpu: "1500m"
