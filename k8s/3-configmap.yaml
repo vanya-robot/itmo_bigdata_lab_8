@@ -21,4 +21,5 @@ data:
 
   MODEL_PATH: src/models/kmeans_model
   SPARK_APP_NAME: Lab7App
-  PROCESSED_CSV_PATH: processed_data.csv
+  PROCESSED_CSV_PATH: processed_data
+  PREDICTED_CSV_PATH: predictions.csv
