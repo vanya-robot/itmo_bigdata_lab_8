@@ -44,4 +44,7 @@ python3 src/main.py
 kill $SCALA_PID 2>/dev/null || true
 
 echo "All jobs finished successfully"
-exit 0
+
+# Keep the container running
+tail -f /dev/null
+
