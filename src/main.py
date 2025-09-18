@@ -12,7 +12,7 @@ def run():
     spark = spark_cfg.get_spark_session()
 
     # Путь, куда Scala сохранила обработанный CSV
-    table_path = os.getenv("HDFS_PROCESSED_PATH", "processed")
+    table_path = os.getenv("PROCESSED_CSV_PATH", "processed")
 
     df = spark.read.option("header", "true").option("inferSchema", "true").csv(table_path)
     print(f"Loaded processed table from: {table_path}")
@@ -27,14 +27,14 @@ def run():
     print("=== Predictions Preview ===")
     preds.show(4, truncate=False)
 
-    output_path = os.getenv('HDFS_PREDICTIONS_PATH', 'preds.txt')
-    if output_path.startswith('hdfs://'):
-        preds.write.mode('overwrite').csv(output_path)
-    else:
-        preds.toPandas().to_csv(output_path, index=False)
-
+    # Save predictions to a local TXT file within the container
+    output_path = app_cfg.processed_csv_path
+    print(f"Saving predictions to local file: {output_path}")
+    preds.toPandas().to_csv(output_path, sep='\t', index=False) # Use tab as separator for TXT
+    
     print(f"Results saved to: {output_path}")
-    spark.stop()
+    # Not stopping spark session to eval utilization
+    # spark.stop()
 
 
 if __name__ == "__main__":
