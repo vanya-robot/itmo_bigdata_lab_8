@@ -36,13 +36,13 @@ class AppConfig:
     spark: SparkConfig = field(default_factory=SparkConfig)
     
     # Postgres configuration
-    postgres_hostname: str = os.getenv("POSTGRES_HOSTNAME", "postgres-service")
+    postgres_hostname: str = os.getenv("POSTGRES_HOST", "postgres-service")
     postgres_port: str = os.getenv("POSTGRES_PORT", "5432")
     postgres_db: str = os.getenv("POSTGRES_DB", "mydatabase")
     postgres_user: str = os.getenv("POSTGRES_USER", "user")
     postgres_password: str = os.getenv("POSTGRES_PASSWORD", "password")
     
     # Table names
-    input_table: str = os.getenv("POSTGRES_INPUT_TABLE", "source_data")
+    input_table: str = os.getenv("POSTGRES_TABLE_SOURCE", "source_data")
 
     processed_csv_path: str = os.getenv("PROCESSED_CSV_PATH", "processed_data.csv")
