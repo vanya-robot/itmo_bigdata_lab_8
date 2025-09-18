@@ -28,7 +28,7 @@ def run():
     preds.show(4, truncate=False)
 
     # Save predictions to a local TXT file within the container
-    output_path = app_cfg.processed_csv_path
+    output_path = app_cfg.predicted_csv_path
     print(f"Saving predictions to local file: {output_path}")
     preds.toPandas().to_csv(output_path, sep='\t', index=False) # Use tab as separator for TXT
     
