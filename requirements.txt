@@ -1,7 +1,7 @@
 numpy==2.3.2
 psycopg2-binary==2.9.10
 py4j==0.10.9.7
-pyspark==3.5.0
+pyspark==4.0.0
 python-dotenv==1.1.1
 pandas==2.3.0
 sqlalchemy==2.0.43
