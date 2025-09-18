@@ -45,4 +45,5 @@ class AppConfig:
     # Table names
     input_table: str = os.getenv("POSTGRES_TABLE_SOURCE", "source_data")
 
-    processed_csv_path: str = os.getenv("PROCESSED_CSV_PATH", "processed_data.csv")
+    predicted_csv_path: str = os.getenv("PREDICTED_CSV_PATH", "predictions.csv")
+    processed_csv_path: str = os.getenv("PROCESSED_CSV_PATH", "processed_data")
