@@ -16,9 +16,9 @@ INSERT INTO source_data (energy_100g, fat_100g, carbohydrates_100g, proteins_100
 (-1.0, 0.0, 0.0, 0.0, 0.0); -- -1 used to simulate invalid value -> will become NULL
 
 -- predictions table --
-CREATE TABLE IF NOT EXISTS predictions (
-    id BIGINT,
-    prediction INTEGER,
-    run_id VARCHAR(64),
-    run_ts VARCHAR(64)
-);
+--CREATE TABLE IF NOT EXISTS predictions (
+--    id BIGINT,
+--    prediction INTEGER,
+--    run_id VARCHAR(64),
+--    run_ts VARCHAR(64)
+--);

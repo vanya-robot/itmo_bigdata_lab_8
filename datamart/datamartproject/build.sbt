@@ -1,5 +1,5 @@
 val scala213Version = "2.13.16"
-val sparkVersion = "4.0.0"
+val sparkVersion = "3.5.0"
 val hadoopVersion = "3.3.6"
 
 lazy val root = project
@@ -7,10 +7,10 @@ lazy val root = project
   .settings(
     name := "datamartproject",
     version := "0.2.0-SNAPSHOT",
-    scalaVersion := scala213Version,  // Теперь 2.13!
+    scalaVersion := scala213Version,
 
     // Настройки assembly
-    assembly / assemblyJarName := "datamart-csv-fat.jar",
+    assembly / assemblyJarName := "datamart-pg-csv-fat.jar", // Changed jar name
     assembly / mainClass := Some("DataMart"),
     
     assembly / assemblyMergeStrategy := {
@@ -25,6 +25,7 @@ lazy val root = project
       "org.apache.spark" %% "spark-core" % sparkVersion,
       "org.apache.spark" %% "spark-sql" % sparkVersion,
       "org.apache.hadoop" % "hadoop-client" % hadoopVersion,
-      "org.apache.spark" %% "spark-mllib" % sparkVersion
+      "org.apache.spark" %% "spark-mllib" % sparkVersion,
+      "org.postgresql" % "postgresql" % "42.6.0"
     )
   )

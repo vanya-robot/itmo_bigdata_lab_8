@@ -32,5 +32,18 @@ class SparkConfig:
 class AppConfig:
     model_path: str = os.getenv("MODEL_PATH", "src/models/kmeans_model")
     source_file: str = os.getenv("SOURCE_FILE", "src/sql/source_data.csv")
-    hdfs_path: str = os.getenv("HDFS_RAW_PATH", "hdfs://namenode:9000/app/sql/source_data.csv")
+
     spark: SparkConfig = field(default_factory=SparkConfig)
+    
+    # Postgres configuration
+    postgres_hostname: str = os.getenv("POSTGRES_HOST", "postgres-service")
+    postgres_port: str = os.getenv("POSTGRES_PORT", "5432")
+    postgres_db: str = os.getenv("POSTGRES_DB", "mydatabase")
+    postgres_user: str = os.getenv("POSTGRES_USER", "user")
+    postgres_password: str = os.getenv("POSTGRES_PASSWORD", "password")
+    
+    # Table names
+    input_table: str = os.getenv("POSTGRES_TABLE_SOURCE", "source_data")
+
+    predicted_csv_path: str = os.getenv("PREDICTED_CSV_PATH", "predictions.csv")
+    processed_csv_path: str = os.getenv("PROCESSED_CSV_PATH", "processed_data")
